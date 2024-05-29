@@ -2,6 +2,17 @@
 # renormalización
 import networkx as nx
 
+
+# Establece las paths a las carpeta de grafo para cargar y de plot para guardar el gráfico generado
+def get_paths(MODE, MANIFESTACION, metric="correlation"):
+    graphs_folder = "graphs/"
+    plots_folder = "plots/" + metric + '/'
+
+    modes_folder = "nodes_" + MODE + '/'
+    graphs_folder = graphs_folder + modes_folder + MANIFESTACION + '/'
+    plots_folder = plots_folder + modes_folder + MANIFESTACION + '/'
+    return  graphs_folder, plots_folder
+
 # Cargamos el grafo seleccionado
 def load_graph(name_graph, graphs_folder):
     full_graph_path = graphs_folder + name_graph + ".gexf"

@@ -56,29 +56,40 @@ def plot_bar(x_axis, y_axis, name_x, name_y, name_plot, path, scale_log=True, al
     plt.savefig(path)
     plt.show()
 
-# Funcion genérica que, dado una serie de puntos, crea un histograma de los mismos haciendo una
+# Funcion genérica que, dado un array con varios arrays de puntos, crea un histograma de los mismos haciendo una
 # distribución en num_bins (100 por defecto)
-def plot_histogram(points, name_x, name_y, name_plot, path, scale_log=True, num_bins=100, min_bins=0.001, max_bins=1, figsize=(8,6)):
+# OJO, si quieremos plotear varios KT debemos pasar por parámetros un array de KTs
+def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, num_bins=100, min_bins=0.001, max_bins=1, figsize=(8,6), arr_kt_plot=None, alpha=1):
     
     plt.figure(figsize=figsize) 
-
     if scale_log:
         plt.xscale('log')  
-        plt.yscale('log')         
-        plt.hist(points, bins=np.logspace(np.log10(min_bins), np.log10(max_bins), num_bins))
-    else:
-        plt.hist(points, bins=num_bins)
+        plt.yscale('log')
+    for index, points in enumerate(arr_points):
+        if scale_log:
+            if arr_kt_plot is None:         
+                plt.hist(points, bins=np.logspace(np.log10(min_bins), np.log10(max_bins), num_bins), alpha=alpha)
+            else:
+                plt.hist(points, bins=np.logspace(np.log10(min_bins), np.log10(max_bins), num_bins), label="K_T = " + str(arr_kt_plot[index]), alpha=alpha)
+        else:
+            if arr_kt_plot is None:    
+                plt.hist(points, bins=num_bins, alpha=alpha)
+            else:
+                plt.hist(points, bins=num_bins, label="K_T = " + str(arr_kt_plot[index]), alpha=alpha)
 
     plt.xlabel(name_x)
     plt.ylabel(name_y)
     plt.title(name_plot)
 
+    if arr_kt_plot is not None:
+        plt.legend()
+
     plt.savefig(path)
     plt.show()
 
-# Función genérica para crear una gráfica de puntos dado unos arrays de ejes X e Y, los nombres de los ejes,
+# Función genérica para crear una gráfica de puntos dado un array de tuplas de arrays de ejes X e Y, los nombres de los ejes,
 # la ruta de los archivos.
-def plot_scatter(points_x, points_y, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6)):
+def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None):
     
     plt.figure(figsize=figsize) 
     
@@ -86,11 +97,19 @@ def plot_scatter(points_x, points_y, name_x, name_y, name_plot, path, scale_log=
         plt.xscale('log')  
         plt.yscale('log')      
 
-    plt.scatter(points_x, points_y, marker=marker, s=dot_size, alpha=alpha)
+    for index, points in enumerate(array_points):
+        if arr_kt_plot is None:         
+            plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha)
+        else:
+            plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
+
 
     plt.xlabel(name_x)
     plt.ylabel(name_y)
     plt.title(name_plot)
+
+    if arr_kt_plot is not None:
+        plt.legend()
 
     plt.savefig(path)
     plt.show()
@@ -137,38 +156,43 @@ def plot_avg_clust_by_norm_int_deg_fig2a(arr_norm_int_deg_fig2a, MANIFESTACION, 
 
 
 # Dado una array con una serie de valores correspondiente al grado de los nodos normalizado
-# por el número total de nodos, imprime el histograma (frecuencia) de estos valores
-def plot_degree_distribution(arr_norm_degrees, name_graph, plots_folder, name_x="Degree", name_y="Frequency", name_plot="Degree of nodes", scale_log=True, num_bins=100, min_bins=0.001, max_bins=1):
+# por el número total de nodos (cada elemento corresponde con una kt), imprime el histograma (frecuencia) de estos valores
+def plot_degree_distribution(arr_norm_degrees, name_graph, plots_folder, name_x="Normalized degree", name_y="Frequency", name_plot="Degree of nodes", scale_log=True, num_bins=100, min_bins=0.001, max_bins=1, arr_kt_plot=None, alpha=1):
     
-    plot_histogram(arr_norm_degrees, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + ".png", scale_log=scale_log,num_bins=num_bins, min_bins=min_bins, max_bins=max_bins)
+    plot_histogram(arr_norm_degrees, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + ".png", scale_log=scale_log,num_bins=num_bins, min_bins=min_bins, max_bins=max_bins, arr_kt_plot=arr_kt_plot, alpha=alpha)
 
 # Dado una array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime la funcion de distribucion de probabilidad de estos valores
-# TODO YERALI no entiendo como quiere que haga esto, pues las probs de cada elemento en el eje X son muy pocas
-def plot_degree_probability_distribution(points, number_of_nodes, name_graph, plots_folder, name_x="Degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True):
-    degrees, counts = np.unique(points, return_counts=True)
-    probs = counts / number_of_nodes
+def plot_degree_probability_distribution(arr_norm_degrees, number_of_nodes, name_graph, plots_folder, name_x="Normalized degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True, arr_kt_plot=None):
+    arr_deg_prob = []
+    for points in arr_norm_degrees:
+        degrees, counts = np.unique(points, return_counts=True)
+        probs = counts / number_of_nodes
+        arr_deg_prob.append((degrees, probs))
 
-    plot_scatter(degrees, probs, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_cdf.png", scale_log=scale_log)
+    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_cdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
+    return arr_deg_prob
 
 
+# Dado un arra# por el número total de nodos, imprime el scatter cony con una serie de valores correspondiente al grado de los nodos normalizado
+# la distribucion cumulativa de estos
+def plot_degree_cummulative_distribution(arr_deg_prob, name_graph, plots_folder, name_x="Normalized degree", name_y="Cummulative Distribution", name_plot="CDF - P(X<x)", scale_log=True, arr_kt_plot=None):
+    arr_deg_cum = []
+    for deg_prob in arr_deg_prob:
+        cum_freq = np.cumsum(deg_prob[1])
+        cdf = cum_freq/cum_freq[-1]
+        arr_deg_cum.append((deg_prob[0], cdf))
 
-# Dado un array con una serie de valores correspondiente al grado de los nodos normalizado
-# por el número total de nodos, imprime el scatter con la distribucion cumulativa de estos
-def plot_degree_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder, name_x="Degree", name_y="Cummulative Distribution", name_plot="PDF - P(X<x)", scale_log=True):
-    
-    cum_freq = np.cumsum(arr_norm_degrees)
-    cdf = cum_freq/cum_freq[-1]
-
-    plot_scatter(arr_norm_degrees, cdf, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_cdf.png", scale_log=scale_log)
+    plot_scatter(arr_deg_cum, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_cdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
+    return arr_deg_cum
 
 # Dado un array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime el scatter con la distribucion complementaria cumulativa de estos
-def plot_degree_complementary_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder, name_x="Degree", name_y="Complementary Cummulative Distribution", name_plot="PDF - P(X>x)", scale_log=True):
+def plot_degree_complementary_cummulative_distribution(arr_deg_cum, name_graph, plots_folder, name_x="Normalized degree", name_y="Complementary Cummulative Distribution", name_plot="CCDF - P(X>x)", scale_log=True, arr_kt_plot=None):
+    arr_deg_comp_cum = []
+    for deg_cum in arr_deg_cum:
+        ccdf = 1 - deg_cum[1]
+        arr_deg_comp_cum.append((deg_cum[0], ccdf))
 
-    cum_freq = np.cumsum(arr_norm_degrees)
-    cdf = cum_freq/cum_freq[-1]
-    ccdf = 1 - cdf
-
-    plot_scatter(arr_norm_degrees, ccdf, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_ccdf.png", scale_log=scale_log)
+    plot_scatter(arr_deg_comp_cum, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_ccdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
     
