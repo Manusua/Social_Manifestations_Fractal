@@ -1,6 +1,11 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+"""from bokeh.plotting import figure
+from bokeh.io import output_notebook, show
+
+output_notebook()"""
+
 
 def get_all_markers():
     return [
@@ -62,9 +67,12 @@ def plot_bar(x_axis, y_axis, name_x, name_y, name_plot, path, scale_log=True, al
 def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, num_bins=100, min_bins=0.001, max_bins=1, figsize=(8,6), arr_kt_plot=None, alpha=1):
     
     plt.figure(figsize=figsize) 
+    plt.style.use('seaborn-v0_8-darkgrid')
+
     if scale_log:
         plt.xscale('log')  
         plt.yscale('log')
+
     for index, points in enumerate(arr_points):
         if scale_log:
             if arr_kt_plot is None:         
@@ -83,20 +91,37 @@ def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, 
 
     if arr_kt_plot is not None:
         plt.legend()
-        path = path[:-4] + "-K_T_" + '_'.join([str(kt) for kt in arr_kt_plot]) + ".png"
+        path = path[:-4] + " - K_T_" + str(arr_kt_plot) + ".png"
+
 
     plt.savefig(path)
     plt.show()
+
+
+
+"""def plot_scatter_bokeh(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None):
+
+
+    p = figure(title = name_plot, background_fill_color="#fafafa", y_axis_type="log")
+    p.xaxis.axis_label = name_x
+    p.yaxis.axis_label = name_y
+    for index, points in enumerate(array_points):
+        p.scatter(points[0], points[1], fill_alpha=0.4, size=12)
+
+    show(p)"""
+
 
 # Función genérica para crear una gráfica de puntos dado un array de tuplas de arrays de ejes X e Y, los nombres de los ejes,
 # la ruta de los archivos.
 def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None):
     
     plt.figure(figsize=figsize) 
-    
+    plt.style.use('seaborn-v0_8-darkgrid')
+
     if scale_log:
         plt.xscale('log')  
         plt.yscale('log')      
+    
 
     for index, points in enumerate(array_points):
         if arr_kt_plot is None:         
@@ -104,15 +129,16 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
         else:
             plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
 
-
     plt.xlabel(name_x)
     plt.ylabel(name_y)
     plt.title(name_plot)
 
     if arr_kt_plot is not None:
         plt.legend()
-        path = path[:-4] + "-K_T_" + '_'.join([str(kt) for kt in arr_kt_plot]) + ".png"
+        path = path[:-4] + " - K_T_" + str(arr_kt_plot) + ".png"
     plt.savefig(path)
+    plt.set_cmap(plt.get_cmap('viridis'))
+
     plt.show()
     
 
@@ -124,7 +150,7 @@ def plot_clust_by_tres_fig2e(dict_tres, MANIFESTACION, hora, plots_folder):
     name_plot = str(hora) + " (" + MANIFESTACION + ") - Fig. 2e"
     path = plots_folder + hora + "_Fig_2e.png"
     figsize = (14,7)
-    plot_scatter(claves, valores, name_x="K_T", name_y="average c(K_T)", name_plot=name_plot, path=path, figsize=figsize, scale_log=True)
+    plot_scatter([(claves, valores)], name_x="K_T", name_y="average c(K_T)", name_plot=name_plot, path=path, figsize=figsize, scale_log=True)
 
 
 # Dado un array con diccionarios con internal degrees como clave y la media de coeficiente de clusterización

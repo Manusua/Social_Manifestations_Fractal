@@ -11,7 +11,7 @@ def get_paths(MODE, MANIFESTACION, metric="correlation"):
     modes_folder = "nodes_" + MODE + '/'
     graphs_folder = graphs_folder + modes_folder + MANIFESTACION + '/'
     plots_folder = plots_folder + modes_folder + MANIFESTACION + '/'
-    return  graphs_folder, plots_folder
+    return graphs_folder, plots_folder
 
 # Cargamos el grafo seleccionado
 def load_graph(name_graph, graphs_folder):
