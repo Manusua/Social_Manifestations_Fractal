@@ -83,6 +83,7 @@ def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, 
 
     if arr_kt_plot is not None:
         plt.legend()
+        path = path[:-4] + "-K_T_" + '_'.join([str(kt) for kt in arr_kt_plot]) + ".png"
 
     plt.savefig(path)
     plt.show()
@@ -110,7 +111,7 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
 
     if arr_kt_plot is not None:
         plt.legend()
-
+        path = path[:-4] + "-K_T_" + '_'.join([str(kt) for kt in arr_kt_plot]) + ".png"
     plt.savefig(path)
     plt.show()
     
@@ -170,7 +171,7 @@ def plot_degree_probability_distribution(arr_norm_degrees, number_of_nodes, name
         probs = counts / number_of_nodes
         arr_deg_prob.append((degrees, probs))
 
-    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_cdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
+    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
     return arr_deg_prob
 
 
