@@ -6,9 +6,9 @@ import numpy as np
 from utils_graph_generation import tresh_normalization
 
 # Dado un grafo y un diccionario con la información clust[nodo] = coeficiente de clusterizacion del nodo
-# devuelve un diccionario con internal degrees como clave y la media de coeficiente de clusterización
+# devuelve un diccionario con internal degrees normalizados como clave y la media de coeficiente de clusterización
 # de los nodos que tienen dicho internal degree como valor
-# TODO, no deberia normalizar el diccioanrio al final apra que sea la figura 2a????
+# TODO, no deberia normalizar el diccioanrio al final para que sea la figura 2a????
 def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
     dict_hid_var_aux = {}
     dict_hid_var = {}
@@ -21,8 +21,9 @@ def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
         else:
             dict_hid_var_aux[att] = np.array(clust[node])
 
+    average_internal_degree = np.mean(np.array(list(dict_hid_var_aux.keys())))
     # Ordenamos el diccionario en función de la clave (internal degree) de menor a mayor
-    dict_hid_var_aux_2 = {k: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
+    dict_hid_var_aux_2 = {k/average_internal_degree: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
 
     # Creamos un diccionario con internal degrees como clave y la media de coeficiente de clusterización
     # de los nodos que tienen dicho internal degree como valor

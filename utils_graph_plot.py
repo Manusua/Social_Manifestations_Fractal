@@ -2,6 +2,42 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def get_all_markers():
+    return [
+    '.',  # point marker
+    ',',  # pixel marker
+    'o',  # circle marker
+    'v',  # triangle_down marker
+    '^',  # triangle_up marker
+    '<',  # triangle_left marker
+    '>',  # triangle_right marker
+    '1',  # tri_down marker
+    '2',  # tri_up marker
+    '3',  # tri_left marker
+    '4',  # tri_right marker
+    's',  # square marker
+    'p',  # pentagon marker
+    '*',  # star marker
+    'h',  # hexagon1 marker
+    'H',  # hexagon2 marker
+    '+',  # plus marker
+    'x',  # x marker
+    'D',  # diamond marker
+    'd',  # thin_diamond marker
+    '|',  # vline marker
+    '_',  # hline marker
+    'P',  # plus (filled) marker
+    'X',  # x (filled) marker
+    0,    # tickleft marker
+    1,    # tickright marker
+    2,    # tickup marker
+    3,    # tickdown marker
+    4,    # caretleft marker
+    5,    # caretright marker
+    6,    # caretup marker
+    7    # caretdown marker
+]
+
 # Función genérica para crear una gráfica de barras dado unos ejes X e Y, los nombres de los ejes,
 # la ruta de los archivos.
 def plot_bar(x_axis, y_axis, name_x, name_y, name_plot, path, bin_log=True, alpha=0.7, figsize=(8,6)):
@@ -68,53 +104,70 @@ def plot_clust_by_tres_fig2e(dict_tres, MANIFESTACION, hora, plots_folder):
     name_plot = str(hora) + " (" + MANIFESTACION + ") - Fig. 2e"
     path = plots_folder + hora + "_Fig_2e.png"
     figsize = (14,7)
-    plot_scatter(claves, valores, name_x="K_T", name_y="average c(K_T)", name_plot=name_plot, path=path, figsize=figsize)
+    plot_scatter(claves, valores, name_x="K_T", name_y="average c(K_T)", name_plot=name_plot, path=path, figsize=figsize, bin_log=True)
 
 
 # Dado un array con diccionarios con internal degrees como clave y la media de coeficiente de clusterización
 # de los nodos que tienen dicho internal degree como valor, plotea el scatter con la clave en eje X y los valores en eje Y
-# Plotea tantos tipos como elementoss haya en el array
-def plot_avg_clust_by_norm_int_deg_fig2a(arr_norm_int_deg_fig2a, MANIFESTACION, hora, plots_folder):
-
-    #print(len(arr_2a))
-    arr_index = [5, 10, 20, 50, 100, 150, 200, 250]
+# Plotea tantos tipos como elementos haya en arr_index(esos indices en concreto)
+def plot_avg_clust_by_norm_int_deg_fig2a(arr_norm_int_deg_fig2a, MANIFESTACION, hora, plots_folder, arr_kt_plot=[5, 10, 20, 50, 100, 150, 200, 250]):
+    if len(arr_kt_plot) > 32:
+        print("Error, el número de elementos a graficar no puede ser mayor a 32")
+        return
     #arr_index = [5, 50, 100]
-    markers = [".", "o", "v", "<", ">", "s", "p", "*"]
+    markers = get_all_markers()
     # Crea el histograma
     plt.xscale('log')  
     plt.yscale('log')      
-    for i, index in enumerate(arr_index):
+    for i, index in enumerate(arr_kt_plot):
         points_x = arr_norm_int_deg_fig2a[index].keys()
         points_y = arr_norm_int_deg_fig2a[index].values()
-        plt.plot(points_x, points_y, alpha=1)
+        plt.plot(points_x, points_y, alpha=0.7)
+        plt.scatter(points_x, points_y, alpha=0.7, s=4,marker=markers[i])
+
+        
     
+    plt.xlabel("Grado interno normalizado")
+    plt.ylabel("coeficiente de clusterización medio\n de nodos con mismo internal degree normalizado")
+
     plt.title(str(hora) + " (" + MANIFESTACION + ") - Fig. 2a")
-    plt.legend(arr_index)
+    plt.legend(list("K_T:" + str(kt) for kt in arr_kt_plot))
     plt.savefig(plots_folder + hora + "_Fig_2a.png")
     plt.show()
 
 
 # Dado una arra con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime el histograma (frecuencia) de estos valores
-def plot_bar_degree_distribution(arr_norm_degrees, name_graph, plots_folder):
+def plot_degree_distribution(arr_norm_degrees, name_graph, plots_folder):
     
     plot_histogram(arr_norm_degrees, name_x="Degree", name_y="Frequency", name_plot="Degree of nodes", path=plots_folder + name_graph + ".png", bin_log=True)
 
+# TODO hacer PDF sin histogramas
+# TODO YERALI no entiendo como quiere que haga esto, pues las probs de cada elemento en el eje X son muy pocas
+def plot_degree_probability_distribution(points, number_of_nodes, name_graph, plots_folder):
+    degrees, counts = np.unique(points, return_counts=True)
+    probs = counts / number_of_nodes
+
+    plot_scatter(degrees, probs, name_x="Degree", name_y="Probability Distribution", name_plot="PDF",path=plots_folder + name_graph + "_cdf.png", bin_log=True)
+
+
+
 # Dado un array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime el scatter con la distribucion cumulativa de estos
-def plot_bar_degree_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder):
+def plot_degree_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder):
     
     cum_freq = np.cumsum(arr_norm_degrees)
     cdf = cum_freq/cum_freq[-1]
 
-    plot_bar(arr_norm_degrees, cdf, "Degree", "Cummlative frequency", "Degree of nodes", plots_folder + name_graph + "_cdf.png", bin_log=True)
+    plot_scatter(arr_norm_degrees, cdf, name_x="Degree", name_y="Cummulative frequency", name_plot="CDF - P(X<x)", path=plots_folder + name_graph + "_cdf.png", bin_log=True)
 
 # Dado un array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime el scatter con la distribucion complementaria cumulativa de estos
-def plot_bar_degree_complementary_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder):
+def plot_degree_complementary_cummulative_distribution(arr_norm_degrees, name_graph, plots_folder):
 
     cum_freq = np.cumsum(arr_norm_degrees)
     cdf = cum_freq/cum_freq[-1]
     ccdf = 1 - cdf
 
-    plot_bar(arr_norm_degrees, ccdf, "Degree", "Complementary Cummulative frequency", "Degree of nodes", plots_folder + name_graph + "_ccdf.png", bin_log=True)
+    plot_scatter(arr_norm_degrees, ccdf, name_x="Degree", name_y="Complementary Cummulative frequency", name_plot="CCDF - P(X>x)", path=plots_folder + name_graph + "_ccdf.png", bin_log=True)
+    
