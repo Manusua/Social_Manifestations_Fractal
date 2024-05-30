@@ -128,6 +128,7 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
             plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha)
         else:
             plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
+            #plt.plot(points[0], points[1], alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
 
     plt.xlabel(name_x)
     plt.ylabel(name_y)
@@ -170,8 +171,6 @@ def plot_avg_clust_by_norm_int_deg_fig2a(arr_norm_int_deg_fig2a, MANIFESTACION, 
         points_y = arr_norm_int_deg_fig2a[index].values()
         plt.plot(points_x, points_y, alpha=0.7)
         plt.scatter(points_x, points_y, alpha=0.7, s=4,marker=markers[i])
-
-        
     
     plt.xlabel("Grado interno normalizado")
     plt.ylabel("coeficiente de clusterización medio\n de nodos con mismo internal degree normalizado")
