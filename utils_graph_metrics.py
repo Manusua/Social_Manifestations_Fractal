@@ -3,6 +3,7 @@
 import networkx as nx
 from tqdm import tqdm
 import numpy as np
+import powerlaw
 from utils_graph_generation import tresh_normalization
 
 # Dado un grafo y un diccionario con la información clust[nodo] = coeficiente de clusterizacion del nodo
@@ -79,3 +80,29 @@ def calc_dist_degree(G):
     
     normalize_dict(dict_dd, G.number_of_nodes())
     return dict(sorted(dict_dd.items()))
+
+
+def get_exp(arr_points, name_graph, arr_kt=None):
+    meas_path = "measures/plfit_degrees/" 
+    for index, points in enumerate(arr_points):
+        points_aux = np.sort(points)
+        points_aux = points_aux[points_aux != 0]
+        points_aux = points_aux[::-1]
+        if arr_kt is None or len(arr_kt) <=1:
+            path = meas_path + name_graph + '.txt'
+        else:
+            path = meas_path + name_graph + '_' + str(arr_kt[index]) + '.txt'
+
+        results = powerlaw.Fit(points_aux)
+        print("alpha:", results.power_law.alpha)
+        print("x_min:", results.power_law.xmin)
+        print("L:", results.power_law.KS())
+        print("D:", results.power_law.KS())
+        print("parameters:", str(results.power_law.parameter1))
+        R, p = results.distribution_compare('power_law', 'lognormal')
+        print(R)
+        print(p)
+        print(results.KS())
+        with open(path, "w") as f:
+            for point in points_aux:
+                f.writelines(str(point) + '\n')
