@@ -4,6 +4,7 @@ import networkx as nx
 from tqdm import tqdm
 import numpy as np
 import powerlaw
+import subprocess
 from utils_graph_generation import tresh_normalization
 
 # Dado un grafo y un diccionario con la información clust[nodo] = coeficiente de clusterizacion del nodo
@@ -82,27 +83,50 @@ def calc_dist_degree(G):
     return dict(sorted(dict_dd.items()))
 
 
-def get_exp(arr_points, name_graph, arr_kt=None):
+def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None):
     meas_path = "measures/plfit_degrees/" 
     for index, points in enumerate(arr_points):
+        # Ordenamos los puntos de menor a mayor quitando los 0s (dan error al calcular el exponente)
         points_aux = np.sort(points)
         points_aux = points_aux[points_aux != 0]
         points_aux = points_aux[::-1]
+
+        # Escribimos los grados de los nodos en un archivo
         if arr_kt is None or len(arr_kt) <=1:
             path = meas_path + name_graph + '.txt'
         else:
             path = meas_path + name_graph + '_' + str(arr_kt[index]) + '.txt'
 
-        results = powerlaw.Fit(points_aux)
-        print("alpha:", results.power_law.alpha)
-        print("x_min:", results.power_law.xmin)
-        print("L:", results.power_law.KS())
-        print("D:", results.power_law.KS())
-        print("parameters:", str(results.power_law.parameter1))
-        R, p = results.distribution_compare('power_law', 'lognormal')
-        print(R)
-        print(p)
-        print(results.KS())
         with open(path, "w") as f:
             for point in points_aux:
                 f.writelines(str(point) + '\n')
+
+        results = powerlaw.Fit(points_aux)
+        if show_comparative:
+            nombres_dist = ["truncated_power_law", "power_law", "lognormal", "exponential", "stretched_exponential", "lognormal_positive"]
+            for i in range(len(nombres_dist)):
+                for j in range(len(nombres_dist)):
+                    ind_j = j
+                    """R is the loglikelihood ratio between the two candidate distributions. This number will be positive if the data is more likely in the first distribution, and negative if the data is more likely in the second distribution. The significance value for that direction is p."""
+                    R, p = results.distribution_compare(nombres_dist[i], nombres_dist[ind_j], normalized_ratio=True, nested=False)
+                    print("Comparando", nombres_dist[i], 'y', nombres_dist[ind_j], 'R:', R, "p:", p)
+
+        pl = results.power_law
+
+        print("Resultados usando powerlaw (fit a powerlaw): ")
+        print("alpha:", pl.alpha)
+        print("sigma:", pl.sigma)
+        print("x_min:", pl.xmin)
+        print("(Kolgomorov Smirnov) D:", pl.KS())
+
+        tpl = results.truncated_power_law
+
+        print("\nResultados usando powerlaw (fit a truncated_powerlaw): ")
+        print("alpha:", tpl.alpha)
+        print("lambda:", tpl.parameter2)
+        print("x_min:", tpl.xmin)
+        print("(Kolgomorov Smirnov) D:", tpl.KS())
+
+        print("\nResultados usando plfit-main (ntamas):")
+        result = subprocess.run(['./plfit-main/build/src/plfit', path], stdout=subprocess.PIPE) #, '-M' en el run para ver momentos centrales
+        print(result.stdout.decode('utf-8'))
