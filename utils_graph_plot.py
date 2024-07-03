@@ -1,6 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import powerlaw as pwl
 """from bokeh.plotting import figure
 from bokeh.io import output_notebook, show
 
@@ -113,9 +114,9 @@ def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, 
 
 # Función genérica para crear una gráfica de puntos dado un array de tuplas de arrays de ejes X e Y, los nombres de los ejes,
 # la ruta de los archivos.
-def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None):
+def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None, pl=None):
     
-    plt.figure(figsize=figsize) 
+    fig = plt.figure(figsize=figsize) 
     plt.style.use('seaborn-v0_8-darkgrid')
 
     if scale_log:
@@ -129,6 +130,9 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
         else:
             plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
             #plt.plot(points[0], points[1], alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
+        if not pl is None:
+            pl.power_law.plot_pdf(label="powerlaw")
+            plt.legend()
 
     plt.xlabel(name_x)
     plt.ylabel(name_y)
@@ -189,14 +193,14 @@ def plot_degree_distribution(arr_norm_degrees, name_graph, plots_folder, name_x=
 
 # Dado una array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime la funcion de distribucion de probabilidad de estos valores
-def plot_degree_probability_distribution(arr_norm_degrees, number_of_nodes, name_graph, plots_folder, name_x="Normalized degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True, arr_kt_plot=None):
+def plot_degree_probability_distribution(arr_norm_degrees, number_of_nodes, name_graph, plots_folder, name_x="Normalized degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True, arr_kt_plot=None, pl=None):
     arr_deg_prob = []
     for points in arr_norm_degrees:
         degrees, counts = np.unique(points, return_counts=True)
         probs = counts / number_of_nodes
         arr_deg_prob.append((degrees, probs))
 
-    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
+    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot, pl=pl)
     return arr_deg_prob
 
 

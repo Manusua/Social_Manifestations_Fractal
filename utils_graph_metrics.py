@@ -4,6 +4,7 @@ import networkx as nx
 from tqdm import tqdm
 import numpy as np
 import powerlaw
+import re
 import subprocess
 from utils_graph_generation import tresh_normalization
 
@@ -83,7 +84,7 @@ def calc_dist_degree(G):
     return dict(sorted(dict_dd.items()))
 
 
-def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None):
+def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_ntamas=False):
     meas_path = "measures/plfit_degrees/" 
     for index, points in enumerate(arr_points):
         # Ordenamos los puntos de menor a mayor quitando los 0s (dan error al calcular el exponente)
@@ -100,33 +101,68 @@ def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None):
         with open(path, "w") as f:
             for point in points_aux:
                 f.writelines(str(point) + '\n')
+        if not only_ntamas:
+            results = powerlaw.Fit(points_aux)
+            if show_comparative:
+                nombres_dist = ["truncated_power_law", "power_law", "lognormal", "exponential", "stretched_exponential", "lognormal_positive"]
+                for i in range(len(nombres_dist)):
+                    for j in range(len(nombres_dist)):
+                        ind_j = j
+                        """R is the loglikelihood ratio between the two candidate distributions. This number will be positive if the data is more likely in the first distribution, and negative if the data is more likely in the second distribution. The significance value for that direction is p."""
+                        R, p = results.distribution_compare(nombres_dist[i], nombres_dist[ind_j], normalized_ratio=True, nested=False)
+                        print("Comparando", nombres_dist[i], 'y', nombres_dist[ind_j], 'R:', R, "p:", p)
 
-        results = powerlaw.Fit(points_aux)
-        if show_comparative:
-            nombres_dist = ["truncated_power_law", "power_law", "lognormal", "exponential", "stretched_exponential", "lognormal_positive"]
-            for i in range(len(nombres_dist)):
-                for j in range(len(nombres_dist)):
-                    ind_j = j
-                    """R is the loglikelihood ratio between the two candidate distributions. This number will be positive if the data is more likely in the first distribution, and negative if the data is more likely in the second distribution. The significance value for that direction is p."""
-                    R, p = results.distribution_compare(nombres_dist[i], nombres_dist[ind_j], normalized_ratio=True, nested=False)
-                    print("Comparando", nombres_dist[i], 'y', nombres_dist[ind_j], 'R:', R, "p:", p)
+            pl = results.power_law
+            print("\n-----------------------------------\n")
+            print("Resultados usando powerlaw (fit a powerlaw): ")
+            print("alpha:", pl.alpha)
+            print("sigma:", pl.sigma)
+            print("x_min:", pl.xmin)
+            print("(Kolgomorov Smirnov) D:", pl.KS())
 
-        pl = results.power_law
+            tpl = results.truncated_power_law
 
-        print("Resultados usando powerlaw (fit a powerlaw): ")
-        print("alpha:", pl.alpha)
-        print("sigma:", pl.sigma)
-        print("x_min:", pl.xmin)
-        print("(Kolgomorov Smirnov) D:", pl.KS())
-
-        tpl = results.truncated_power_law
-
-        print("\nResultados usando powerlaw (fit a truncated_powerlaw): ")
-        print("alpha:", tpl.alpha)
-        print("lambda:", tpl.parameter2)
-        print("x_min:", tpl.xmin)
-        print("(Kolgomorov Smirnov) D:", tpl.KS())
-
-        print("\nResultados usando plfit-main (ntamas):")
-        result = subprocess.run(['./plfit-main/build/src/plfit', path], stdout=subprocess.PIPE) #, '-M' en el run para ver momentos centrales
+            print("\nResultados usando powerlaw (fit a truncated_powerlaw): ")
+            print("alpha:", tpl.alpha)
+            print("lambda:", tpl.parameter2)
+            print("x_min:", tpl.xmin)
+            print("(Kolgomorov Smirnov) D:", tpl.KS())
+        
+        print("\n-----------------------------------\n")
+        print("Resultados usando plfit-main (ntamas):")
+        result = subprocess.run(['./plfit-main/build/src/plfit', path, '-p', 'exact'], stdout=subprocess.PIPE) #, '-M' en el run para ver momentos centrales
         print(result.stdout.decode('utf-8'))
+        output = result.stdout.decode('utf-8')
+        # Define el patrón regex para extraer los valores
+        pattern_a = r"alpha\s=\s+([\d.]+)"
+        pattern_x = r"xmin\s=\s+([\d.]+)"
+        pattern_L = r"L\s=\s+([\d.]+)"
+        pattern_D = r"D\s=\s+([\d.]+)"
+        pattern_p = r"p\s=\s+([\d.]+)"
+
+        # Utiliza re.search para encontrar el patrón en el output
+        match_a = re.search(pattern_a, output)
+        match_x = re.search(pattern_x, output)
+        match_L = re.search(pattern_L, output)
+        match_D = re.search(pattern_D, output)
+        match_p = re.search(pattern_p, output)
+        print(match_a)
+        """print(match_x)
+        print(match_L)
+        print(match_D)
+        print(match_p)
+        if match_a and match_x and match_L and match_D and match_p:
+            alpha = float(match_a.group(1))
+            xmin = float(match_x.group(1))
+            L = float(match_L.group(1))
+            D = float(match_D.group(1))
+            p = float(match_p.group(1))
+
+            print(f"alpha = {alpha}")
+            print(f"xmin = {xmin}")
+            print(f"L = {L}")
+            print(f"D = {D}")
+            print(f"p = {p}")
+        else:
+            print("No se encontraron coincidencias en el output.")"""
+    return results
