@@ -131,7 +131,7 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
             plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
             #plt.plot(points[0], points[1], alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
         if not pl is None:
-            pl.power_law.plot_pdf(label="powerlaw")
+            pl.power_law.plot_pdf(label="powerlaw, alpha = " + str(round(pl.alpha, 5)))
             plt.legend()
 
     plt.xlabel(name_x)
