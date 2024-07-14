@@ -112,6 +112,8 @@ def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, 
     show(p)"""
 
 
+
+
 # Función genérica para crear una gráfica de puntos dado un array de tuplas de arrays de ejes X e Y, los nombres de los ejes,
 # la ruta de los archivos.
 def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, marker="x", dot_size=1, alpha=0.7, figsize=(8,6), arr_kt_plot=None, pl=None):
@@ -133,7 +135,7 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
         if not pl is None:
             pl.power_law.plot_pdf(label="powerlaw, alpha = " + str(round(pl.alpha, 5)))
             plt.legend()
-
+            plt.ylim(0.001, 0.1)
     plt.xlabel(name_x)
     plt.ylabel(name_y)
     plt.title(name_plot)
@@ -225,4 +227,57 @@ def plot_degree_complementary_cummulative_distribution(arr_deg_cum, name_graph, 
         arr_deg_comp_cum.append((deg_cum[0], ccdf))
 
     plot_scatter(arr_deg_comp_cum, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_ccdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot)
+    
+
+
+
+
+def plot_yerali(arr_pdf_points, arr_ccdf_points, plfit, figsize=(10,8), arr_kt =None):
+    
+    fig, ax = plt.subplots()
+    # fig = plt.figure(figsize=figsize) 
+    plt.style.use('seaborn-v0_8-darkgrid')
+
+    ax.set_xscale('log')  
+    ax.set_yscale('log')      
+    
+    for index, points in enumerate(arr_pdf_points):
+        if arr_kt is None:         
+            ax.scatter(points[0], points[1], marker="x", s=1, alpha=0.7)
+        """else:
+            plt.scatter(points[0], points[1], marker=marker, s=dot_size, alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))
+            plt.plot(points[0], points[1], alpha=alpha, label="K_T = " + str(arr_kt_plot[index]))"""
+        plfit.power_law.plot_pdf(label="powerlaw, alpha = " + str(round(plfit.alpha, 5)), ax=ax, linestyle='--')
+        #plfit.plot_ccdf(label="powerlaw, alpha = " + str(round(plfit.alpha, 5)), color='red')
+        ax.legend()
+    #0.001, 0.1
+    with plt.style.context('ggplot'):
+        ins_ax = ax.inset_axes([0.1, 0.1, 0.4, 0.4])
+        ins_ax.set_xscale('log')
+        ins_ax.set_yscale('log')
+
+        for index, points in enumerate(arr_ccdf_points):
+            if arr_kt is None:
+                ins_ax.scatter(points[0], points[1], marker="x", s=1, alpha=0.7)
+            else: print("error, kt no soportado aun TODO")
+        ins_ax.set_title("CCDF")
+        ins_ax.set_xlabel("Degree", fontsize=8)
+        ins_ax.set_ylabel("CC Probability", fontsize=8)
+        ins_ax.tick_params(labelsize=8)
+        """x = np.linspace(1, 400, 1000)
+
+        y = (x/34)**(-plfit.power_law.alpha+1)
+        ins_ax.plot(x, y)"""
+        plfit.power_law.plot_ccdf(label="powerlaw, alpha = " + str(round(plfit.alpha, 5)), ax=ins_ax, linestyle='--')
+        
+
+    ax.set_ylim(0.001, 0.1)
+
+    ax.set_xlabel("Degree")
+    ax.set_ylabel("Probability")
+    ax.set_title("PDF y CCDF")
+
+    plt.savefig("plots/")
+
+    plt.show()
     

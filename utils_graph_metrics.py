@@ -85,6 +85,7 @@ def calc_dist_degree(G):
 
 
 def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_ntamas=False):
+
     meas_path = "measures/plfit_degrees/" 
     for index, points in enumerate(arr_points):
         # Ordenamos los puntos de menor a mayor quitando los 0s (dan error al calcular el exponente)
@@ -120,15 +121,15 @@ def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_nta
             print("x_min:", pl.xmin)
             print("(Kolgomorov Smirnov) D:", pl.KS())
 
-            tpl = results.truncated_power_law
+            """tpl = results.truncated_power_law
 
             print("\nResultados usando powerlaw (fit a truncated_powerlaw): ")
             print("alpha:", tpl.alpha)
             print("lambda:", tpl.parameter2)
             print("x_min:", tpl.xmin)
-            print("(Kolgomorov Smirnov) D:", tpl.KS())
+            print("(Kolgomorov Smirnov) D:", tpl.KS())"""
         
-        print("\n-----------------------------------\n")
+        """print("\n-----------------------------------\n")
         print("Resultados usando plfit-main (ntamas):")
         result = subprocess.run(['./plfit-main/build/src/plfit', path, '-p', 'exact'], stdout=subprocess.PIPE) #, '-M' en el run para ver momentos centrales
         print(result.stdout.decode('utf-8'))
@@ -146,7 +147,7 @@ def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_nta
         match_L = re.search(pattern_L, output)
         match_D = re.search(pattern_D, output)
         match_p = re.search(pattern_p, output)
-        print(match_a)
+        print(match_a)"""
         """print(match_x)
         print(match_L)
         print(match_D)
@@ -166,3 +167,34 @@ def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_nta
         else:
             print("No se encontraron coincidencias en el output.")"""
     return results
+
+# Dado un array de arrays correpspondiente con los grados (o los grados normalizados) de un grafo por cada K_T
+# y el numero de nodos del grafo, devuelve un array de tuplas de cada K_T. 
+# cada tupla tiene como primer elementos los grados de los nodos (eje X) y las probabilidades de que 
+# cada nodo tenga dicho grado (o grado normalizado) (eje Y)
+def calc_pdf_points(arr_points, number_of_points):
+    arr_pdf_points = []
+    for points in arr_points:
+        degrees, counts = np.unique(points, return_counts=True)
+        probs = counts / number_of_points
+        arr_pdf_points.append((degrees, probs))
+    return arr_pdf_points
+
+def calc_cdf_points(arr_pdf_points):
+    arr_cdf_points = []
+    for pdf_points in arr_pdf_points:
+        cdf = np.cumsum(pdf_points[1])
+        # No deberia ser necesario, pues las probs deberían sumar 1
+        #cdf = cum_freq/cum_freq[-1]
+        arr_cdf_points.append((pdf_points[0], cdf))
+    return arr_cdf_points
+
+def calc_ccdf_points(arr_cdf_points):
+    arr_ccdf_points = []
+    for deg_cum in arr_cdf_points:
+        ccdf = 1 - deg_cum[1]
+        # Quitamos el último punto pues, al ser escala logaritimica en los ejes y ser su probablidad
+        # complementaria 0 o muy ceercana a 0, hace que el grafico quede deformado y no es util
+        arr_ccdf_points.append((deg_cum[0][:-1], ccdf[:-1]))   
+    return arr_ccdf_points
+
