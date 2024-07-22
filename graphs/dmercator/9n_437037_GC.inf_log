@@ -1,0 +1,126 @@
+
+===========================================================================================
+D-Mercator: accurate embeddings of graphs in the SD space
+version: 0.9
+started on: 2024/07/22 18:46 UTC
+edgelist filename: graphs/dmercator/9n_437037_GC.edge
+seed: 1721673994
+
+Loading edgelist......................................................................done.
+
+Checking number of connected components...............................................done.
+
+Analyzing degrees.....................................................................done.
+
+Computing local clustering............................................................done.
+
+Ordering vertices.....................................................................done.
+
+Properties of the graph
+    Nb vertices:                    774
+    Nb edges:                       9639
+    Average degree:                 24.91
+    Minimum degree:                 1
+    Maximum degree:                 391
+    Nb of degree class:             103
+    Average clustering:             0.8697
+
+Inferring parameters...
+           beta      avg. clustering 
+         2.4159               0.6760 
+         3.6239               0.7307 
+         5.4358               0.7516 
+         8.1538               0.7656 
+        12.2306               0.7675 
+        18.3459               0.7711 
+WARNING: value too high, using beta =     27.5189.
+                       ...............................................................done.
+
+Inferred ensemble (random positions)
+    Average degree:                 24.9069
+    Minimum degree:                 1
+    Maximum degree:                 391
+    Average clustering:             0.7711
+    Parameters
+      - beta:                       27.5189
+      - mu:                         0.0200
+      - radius_S1 (R):              123.1859
+
+Finding initial positions/ordering...
+    Building the weights matrix... Matrix built.
+
+    Computing eigenvectors using Spectra parameter ncv = 7... Convergence reached.
+
+    Sum of the angular positions (before adjustment): 31.2488
+                                     .................................................done.
+
+Refining the positions...
+    ...of vertices     [1,38]......done in 0.6146 seconds (27/38 changed position)
+    ...of vertices    [39,76]......done in 0.6852 seconds (38/38 changed position)
+    ...of vertices   [77,114]......done in 0.6017 seconds (36/38 changed position)
+    ...of vertices  [115,152]......done in 0.5677 seconds (36/38 changed position)
+    ...of vertices  [153,190]......done in 0.5600 seconds (37/38 changed position)
+    ...of vertices  [191,228]......done in 0.5628 seconds (36/38 changed position)
+    ...of vertices  [229,266]......done in 0.5436 seconds (32/38 changed position)
+    ...of vertices  [267,304]......done in 0.5484 seconds (29/38 changed position)
+    ...of vertices  [305,342]......done in 0.5452 seconds (27/38 changed position)
+    ...of vertices  [343,380]......done in 0.5404 seconds (36/38 changed position)
+    ...of vertices  [381,418]......done in 0.5321 seconds (29/38 changed position)
+    ...of vertices  [419,456]......done in 0.5340 seconds (27/38 changed position)
+    ...of vertices  [457,494]......done in 0.5252 seconds (20/38 changed position)
+    ...of vertices  [495,532]......done in 0.5309 seconds (12/38 changed position)
+    ...of vertices  [533,570]......done in 0.5535 seconds (13/38 changed position)
+    ...of vertices  [571,608]......done in 0.5554 seconds (14/38 changed position)
+    ...of vertices  [609,646]......done in 0.5341 seconds (16/38 changed position)
+    ...of vertices  [647,684]......done in 0.5281 seconds (14/38 changed position)
+    ...of vertices  [685,722]......done in 0.5313 seconds (24/38 changed position)
+    ...of vertices  [723,760]......done in 0.5264 seconds (24/38 changed position)
+    ...of vertices  [761,774]......done in 0.1960 seconds ( 9/14 changed position)
+                         .............................................................done.
+
+Updating values of kappa based on inferred positions...
+    WARNING: maximum number of iterations reached before convergence. This limit can be
+             adjusted by setting the parameters KAPPA_MAX_NB_ITER_CONV to desired value.
+                                                       ...............................done.
+
+    => Inferred coordinates saved to graphs/dmercator/9n_437037_GC.inf_coord
+
+Internal parameters and options
+    ALREADY_INFERRED_PARAMETERS_FILENAME   
+    BETA_ABS_MAX                           25
+    BETA_ABS_MIN                           1.01
+    CHARACTERIZATION_MODE                  false
+    CHARACTERIZATION_NB_GRAPHS             100
+    CLEAN_RAW_OUTPUT_MODE                  false
+    CUSTOM_BETA                            false
+    CUSTOM_CHARACTERIZATION_NB_GRAPHS      false
+    CUSTOM_INFERRED_COORDINATES            false
+    CUSTOM_OUTPUT_ROOTNAME_MODE            false
+    CUSTOM_SEED                            false
+    EDGELIST_FILENAME:                     graphs/dmercator/9n_437037_GC.edge
+    EXP_CLUST_NB_INTEGRATION_MC_STEPS      600
+    EXP_DIST_NB_INTEGRATION_STEPS          1000
+    KAPPA_MAX_NB_ITER_CONV                 500
+    KAPPA_POST_INFERENCE_MODE              true
+    MAXIMIZATION_MODE                      true
+    MIN_NB_ANGLES_TO_TRY                   100
+    NUMERICAL_CONVERGENCE_THRESHOLD_1      0.01
+    NUMERICAL_CONVERGENCE_THRESHOLD_2      5e-05
+    NUMERICAL_CONVERGENCE_THRESHOLD_3      0.5
+    NUMERICAL_ZERO                         1e-10
+    QUIET_MODE                             false
+    REFINE_MODE                            false
+    ROOTNAME_OUTPUT:                       graphs/dmercator/9n_437037_GC
+    SEED                                   1721673994
+    VALIDATION_MODE                        false
+    VERBOSE_MODE                           false
+    VERSION                                0.9
+
+Ended on: 2024/07/22 18:46 UTC
+Elapsed CPU time (embedding):               41.9938 seconds
+    initialization:                          0.1130 seconds
+    parameters inference:                   26.9915 seconds
+    initial positions:                       0.2382 seconds
+    refining positions:                     11.3169 seconds
+    adjusting kappas:                        3.3342 seconds
+===========================================================================================

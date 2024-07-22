@@ -2,15 +2,15 @@
 ===========================================================================================
 D-Mercator: accurate embeddings of graphs in the SD space
 version: 0.9
-started on: 2024/06/27 9:10 UTC
-edgelist filename: graphs/dmercator/9n_437038
-seed: 1719479417
+started on: 2024/07/22 18:45 UTC
+edgelist filename: graphs/dmercator/9n_437037
+seed: 1721673959
 
 Loading edgelist......................................................................done.
 
 Checking number of connected components...
     - More than one component found!!
-    - 689/747 vertices in the largest component.
-    - Edges belonging to the largest component saved to graphs/dmercator/9n_437038_GC.edge.
+    - 774/830 vertices in the largest component.
+    - Edges belonging to the largest component saved to graphs/dmercator/9n_437037_GC.edge.
     - Please rerun the program using this new edgelist.
 

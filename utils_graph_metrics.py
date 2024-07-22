@@ -4,8 +4,7 @@ import networkx as nx
 from tqdm import tqdm
 import numpy as np
 import powerlaw
-import re
-import subprocess
+import pandas as pd
 from utils_graph_generation import tresh_normalization
 
 # Dado un grafo y un diccionario con la información clust[nodo] = coeficiente de clusterizacion del nodo
@@ -198,3 +197,15 @@ def calc_ccdf_points(arr_cdf_points):
         arr_ccdf_points.append((deg_cum[0][:-1], ccdf[:-1]))   
     return arr_ccdf_points
 
+def check_number_hashtags_hour():
+    file = "data/csv/9n/hashtag_usages_per_hour_9n_9ngranmarchaporlajusticia_weighted.txt"
+    #file = "data/csv/nat/hashtag_usages_per_hour_noaltarifazo_ruidazonacional_weighted.txt"
+    df = pd.read_csv(file, sep=' ')
+    df_h = df["hour"].unique()
+    my_dict ={}
+    for hour in df_h:
+        #my_dict[hour] = len(df[(df["hour"] == hour)]["hashtag"].unique())
+        my_dict[hour] = len(df[(df["hour"] == hour)]["hashtag"])
+        key_max =max(my_dict, key=my_dict.get)
+    print("Hora con mayor número de hashtags:", key_max, "num hashtags:", my_dict[key_max] )
+    plt.scatter(my_dict.keys(), my_dict.values())
