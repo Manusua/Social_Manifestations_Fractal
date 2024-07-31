@@ -3,19 +3,24 @@
 import networkx as nx
 from tqdm import tqdm
 import numpy as np
-import powerlaw
+#import powerlaw
+import os
+import json
 import pandas as pd
 from utils_graph_generation import tresh_normalization
+
+PATH_METRICS = "measures/"
 
 # Dado un grafo y un diccionario con la información clust[nodo] = coeficiente de clusterizacion del nodo
 # devuelve un diccionario con internal degrees normalizados como clave y la media de coeficiente de clusterización
 # de los nodos que tienen dicho internal degree como valor
-# TODO, no deberia normalizar el diccioanrio al final para que sea la figura 2a????
 def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
     dict_hid_var_aux = {}
     dict_hid_var = {}
     # Creamos un diccionario con cada internal degree como clave y un array con los coeficientes
     # de clusterización de los nodos que tienen dicho internal degree
+    arr_int_deg = []
+
     for node in G.nodes():
         att = G.nodes[node]["internalDegree"]
         if att in dict_hid_var_aux.keys():
@@ -23,9 +28,15 @@ def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
         else:
             dict_hid_var_aux[att] = np.array(clust[node])
 
-    average_internal_degree = np.mean(np.array(list(dict_hid_var_aux.keys())))
+        arr_int_deg.append(att)
+
+    #average_internal_degree = np.mean(np.array(list(dict_hid_var_aux.keys())))
+    #average_internal_degree = np.mean(arr_int_deg)
+
+    average_degree = calc_avg_degree(G)
     # Ordenamos el diccionario en función de la clave (internal degree) de menor a mayor
-    dict_hid_var_aux_2 = {k/average_internal_degree: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
+    # sorted(dict) devuleve las keys ordenadas
+    dict_hid_var_aux_2 = {k/average_degree: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
 
     # Creamos un diccionario con internal degrees como clave y la media de coeficiente de clusterización
     # de los nodos que tienen dicho internal degree como valor
@@ -33,6 +44,34 @@ def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
         dict_hid_var[key] = np.average(dict_hid_var_aux_2[key])
 
     return dict_hid_var
+
+# Dado un grafo devuelve el grado medio de sus nodos
+def calc_avg_degree(G):
+    grados = dict(G.degree())
+    grado_medio = sum(grados.values()) / len(grados)
+
+    return grado_medio
+
+# Función para convertir las claves de cadenas a enteros
+def convert_keys_to_float(d, recursive=True, tipo="float"):
+    new_dict = {}
+    for k, v in d.items():
+        # Convierte la clave a entero o a float si es posible
+        try:
+            if tipo == "int":
+                k = int(k)
+            else:
+                k = float(k)
+        except ValueError:
+            pass
+        
+        if recursive:
+            # Si el valor es un diccionario, aplica la conversión recursivamente
+            if isinstance(v, dict):
+                v = convert_keys_to_float(v)
+        
+        new_dict[k] = v
+    return new_dict
 
 
 # Crea MAX_UMBRAL sucesivos subgrafos tras aplicar iterativamene el proceso de normalización
@@ -42,25 +81,60 @@ def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
 #   - arr_norm_int_deg_fig2a: array con diccionarios con internal degrees como clave y la media de coeficiente de clusterización
 #       de los nodos que tienen dicho internal degree como valor. Cada índice se corresponde con el treshold empleado
 #       para generar el subgrafo
-def calc_clust(G, MAX_UMBRAL):
+def calc_clust(G, MAX_UMBRAL, measures_name, clust_flag=True, deg=True, bipartite=False):
+    
     dict_tres_avg_clust_fig2e = {}
-    arr_norm_int_deg_fig2a = []
-    for i in tqdm(range(MAX_UMBRAL)):
-        treshold = i
-        # Creamos el subgrafo basándonos en el treshold seleccionado
-        F = tresh_normalization(G, treshold)
-        if F == -1:
-            # Caso de grafo vacío o grafo inconexo
-            return dict_tres_avg_clust_fig2e, arr_norm_int_deg_fig2a
-        #TODO para ejecutar sobre gráfica cugraph https://github.com/rapidsai/cugraph/tree/branch-24.06/python/nx-cugraph
-        # diccionario[nodo] = coeficiente de clusterización del nodo https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.clustering.html#networkx.algorithms.cluster.clustering
-        clust  = nx.clustering(F)
-        avg_clust = np.mean(np.array(list(clust.values())))
-        dict_tres_avg_clust_fig2e[treshold] = avg_clust
+    dict_norm_int_deg_fig2a = {}
 
-        arr_norm_int_deg_fig2a.append(calc_fig2a_avg_clust_coef_by_normalized_internal_degree(F, clust))
+    # Intentamos cargar el archivo donde volcar los datos
+    if os.path.exists(measures_name + '_2a.json'):
+        try:
+            with open(measures_name + '_2a.json', 'r') as f:
+                dict_norm_int_deg_fig2a = json.load(f)
+            dict_norm_int_deg_fig2a = convert_keys_to_float(dict_norm_int_deg_fig2a)
+        except json.JSONDecodeError:
+            dict_norm_int_deg_fig2a = {}
+    if os.path.exists(measures_name + '_2e.json'):
+        try:
+            with open(measures_name + '_2e.json', 'r') as f:
+                dict_tres_avg_clust_fig2e = json.load(f)
+            dict_tres_avg_clust_fig2e = convert_keys_to_float(dict_tres_avg_clust_fig2e)
+        except json.JSONDecodeError:
+            dict_tres_avg_clust_fig2e = {}
 
-    return dict_tres_avg_clust_fig2e, arr_norm_int_deg_fig2a
+    for treshold in tqdm(range(MAX_UMBRAL)):
+        treshold = float(treshold) #+ 990 para probar que pasa en users con k_t muy alta
+        flag_2a = treshold in dict_norm_int_deg_fig2a.keys()
+        flag_2e = treshold in dict_tres_avg_clust_fig2e.keys()
+        # Si ambas son true podemos saltar el paso
+        if not (flag_2a and flag_2e):
+            # Creamos el subgrafo basándonos en el treshold seleccionado
+            F = tresh_normalization(G, treshold)
+            if F == -1:
+                # Caso de grafo vacío o grafo inconexo
+                # Escribimos y volvemos. Sobreescribimos los datos pq ya se ha hecho un load inicial
+                with open(measures_name + '_2a.json', "w") as f:
+                    json.dump(dict_norm_int_deg_fig2a, f, indent=2)
+                with open(measures_name + '_2e.json', "w") as f:
+                    json.dump(dict_tres_avg_clust_fig2e, f, indent=2)
+
+                return dict_tres_avg_clust_fig2e, dict_norm_int_deg_fig2a
+            #TODO para ejecutar sobre gráfica cugraph https://github.com/rapidsai/cugraph/tree/branch-24.06/python/nx-cugraph
+            # diccionario[nodo] = coeficiente de clusterización del nodo https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.clustering.html#networkx.algorithms.cluster.clustering
+            if clust_flag and not flag_2e:
+                if bipartite:
+                    clust = nx.algorithms.bipartite.clustering(F)
+                else:
+                    clust  = nx.clustering(F)
+                avg_clust = np.mean(np.array(list(clust.values())))
+                dict_tres_avg_clust_fig2e[treshold] = avg_clust
+            if deg and not flag_2a:
+                dict_norm_int_deg_fig2a[treshold] = calc_fig2a_avg_clust_coef_by_normalized_internal_degree(F, clust)
+        with open(measures_name + '_2a.json', "w") as f:
+            json.dump(dict_norm_int_deg_fig2a, f, indent=2)
+        with open(measures_name + '_2e.json', "w") as f:
+            json.dump(dict_tres_avg_clust_fig2e, f, indent=2)
+    return dict_tres_avg_clust_fig2e, dict_norm_int_deg_fig2a
 
 
 # Función genérica que, dado un diccionario con valores numéricos, divide todos los elementos
@@ -128,7 +202,7 @@ def get_exp(arr_points, name_graph, show_comparative=True, arr_kt=None, only_nta
             print("x_min:", tpl.xmin)
             print("(Kolgomorov Smirnov) D:", tpl.KS())"""
         
-        """print("\n-----------------------------------\n")
+        """print("-----------------------------------")
         print("Resultados usando plfit-main (ntamas):")
         result = subprocess.run(['./plfit-main/build/src/plfit', path, '-p', 'exact'], stdout=subprocess.PIPE) #, '-M' en el run para ver momentos centrales
         print(result.stdout.decode('utf-8'))

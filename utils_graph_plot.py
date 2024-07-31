@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import powerlaw as pwl
+#import powerlaw as pwl
 """from bokeh.plotting import figure
 from bokeh.io import output_notebook, show
 
@@ -76,6 +76,8 @@ def plot_histogram(arr_points, name_x, name_y, name_plot, path, scale_log=True, 
 
     for index, points in enumerate(arr_points):
         if scale_log:
+            if min_bins == 0:
+                min_bins = 0.001
             if arr_kt_plot is None:         
                 plt.hist(points, bins=np.logspace(np.log10(min_bins), np.log10(max_bins), num_bins), alpha=alpha)
             else:
@@ -149,18 +151,9 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
     plt.show()
     
 
-# Dado un diccionario, grafica un scatter plot con las claves en el eje X y los valores en el Y
-def plot_clust_by_tres_fig2e(dict_tres, MANIFESTACION, hora, plots_folder):
-    # Obtener las claves y los valores del diccionario
-    claves = list(dict_tres.keys())
-    valores = list(dict_tres.values())
-    name_plot = "Manifestación " + MANIFESTACION + ") - Fig. 2e"
-    path = plots_folder + hora + "_Fig_2e.png"
-    figsize = (14,7)
-    plot_scatter([(claves, valores)], name_x="K_T", name_y="average c(K_T)", name_plot=name_plot, path=path, figsize=figsize, scale_log=True)
 
 
-# Dado un array con diccionarios con internal degrees como clave y la media de coeficiente de clusterización
+# Dado un diccionario con K_t como claves y como valores diccionarios con internal degrees como clave y la media de coeficiente de clusterización
 # de los nodos que tienen dicho internal degree como valor, plotea el scatter con la clave en eje X y los valores en eje Y
 # Plotea tantos tipos como elementos haya en arr_index(esos indices en concreto)
 def plot_avg_clust_by_norm_int_deg_fig2a(arr_norm_int_deg_fig2a, MANIFESTACION, hora, plots_folder, arr_kt_plot=[5, 10, 20, 50, 100, 150, 200, 250]):
@@ -195,14 +188,15 @@ def plot_degree_distribution(arr_norm_degrees, name_graph, plots_folder, name_x=
 
 # Dado una array con una serie de valores correspondiente al grado de los nodos normalizado
 # por el número total de nodos, imprime la funcion de distribucion de probabilidad de estos valores
-def plot_degree_probability_distribution(arr_norm_degrees, number_of_nodes, name_graph, plots_folder, name_x="Normalized degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True, arr_kt_plot=None, pl=None):
+def plot_degree_probability_distribution(arr_norm_degrees, name_graph, plots_folder, name_x="Normalized degree", name_y="Probability Distribution", name_plot="PDF - P(X=x)", scale_log=True, arr_kt_plot=None, pl=None):
     arr_deg_prob = []
     for points in arr_norm_degrees:
         degrees, counts = np.unique(points, return_counts=True)
-        probs = counts / number_of_nodes
-        arr_deg_prob.append((degrees, probs))
+        #probs = counts / len(points)
+        #arr_deg_prob.append((degrees, probs))
+        arr_deg_prob.append((degrees, counts))
 
-    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + name_graph + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot, pl=pl)
+    plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + str(name_graph) + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot, pl=pl)
     return arr_deg_prob
 
 

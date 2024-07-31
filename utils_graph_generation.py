@@ -4,20 +4,31 @@ import networkx as nx
 
 
 # Establece las paths a las carpeta de grafo para cargar y de plot para guardar el gráfico generado
-def get_paths(MODE, MANIFESTACION, metric="correlation"):
+def get_paths(MODE, MANIFESTACION, metric="correlation", hora=None):
     graphs_folder = "graphs/"
     plots_folder = "plots/" + metric + '/'
 
     modes_folder = "nodes_" + MODE + '/'
     graphs_folder = graphs_folder + modes_folder + MANIFESTACION + '/'
     plots_folder = plots_folder + modes_folder + MANIFESTACION + '/'
-    return graphs_folder, plots_folder
+
+    measures_name=''
+    if not hora is None:
+        if MODE == "hashtag":
+            str_meas = 'h'
+        elif MODE == "user":
+            str_meas = 'u'
+        elif MODE == "bipartite":
+            str_meas = 'b'
+        measures_name = "measures/" + MANIFESTACION + '/' + hora + '_' + str_meas 
+    return graphs_folder, plots_folder, measures_name
 
 # Cargamos el grafo seleccionado
 def load_graph(name_graph, graphs_folder):
     full_graph_path = graphs_folder + name_graph + ".gexf"
     # Cargamos el grafo
     G = nx.read_gexf(full_graph_path)
+    print(full_graph_path)
     print("Cargado el grafo de la hora " + name_graph.split('_')[-1] + ', numero de nodos: ' + str(G.number_of_nodes()) + ', numero de aristas: ' + str(G.number_of_edges()))
     return G
 
@@ -47,11 +58,15 @@ def add_edges_subgraph(G, F):
 
 # Añadimos la variable "internalDegree" a cada nodo dada la media de gradoscel subgrafo
 # y el grado del propio nodo
-def add_hidden_variable(F, avg_deg):
-    dict_hidd_var = {}
-    for node in F.nodes():
-        dict_hidd_var[node] = F.degree[node] / avg_deg
-    nx.set_node_attributes(F, dict_hidd_var, "internalDegree")
+def add_hidden_variable(F):
+    avg_deg = calc_avg_degree(F)
+    if avg_deg != 0:
+        dict_hidd_var = {}
+        for node in F.nodes():
+            dict_hidd_var[node] = F.degree[node] / avg_deg
+        nx.set_node_attributes(F, dict_hidd_var, "internalDegree")
+    else:
+        return -1
 
 
 # Calcula la media de grados de un grafo
@@ -72,11 +87,18 @@ def tresh_normalization(G, treshold):
     
     # Ahora añadimos las aristas de G de los nodos en el subgrafo F
     F = add_edges_subgraph(G, F)
+    
+    # Si ya no hay aristas en el grafo, acabamos el proceso
+    if F.number_of_edges() == 0:
+        return -1
 
     # Añadimos como variable oculta el grado entre la media del grafo a cada nodo
-    avg_deg = calc_avg_degree(F)
-    if avg_deg != 0:
-        add_hidden_variable(F, avg_deg)
-    else:
+    if add_hidden_variable(F) == -1:
         return -1
+
+    
+    # # Selecciono la component gigante del grafo resultante
+    # Gcc = sorted(nx.connected_components(F), key=len, reverse=True)
+    # F = F.subgraph(Gcc[0])
+
     return F
