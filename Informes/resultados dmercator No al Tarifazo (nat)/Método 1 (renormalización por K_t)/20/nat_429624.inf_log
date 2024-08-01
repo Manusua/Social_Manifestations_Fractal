@@ -1,0 +1,182 @@
+
+===========================================================================================
+D-Mercator: accurate embeddings of graphs in the SD space
+version: 0.9
+started on: 2024/07/31 20:34 UTC
+edgelist filename: graphs/dmercator/filt2/20/nat_429624.edge
+seed: 1722458094
+
+Loading edgelist......................................................................done.
+
+Checking number of connected components...............................................done.
+
+Analyzing degrees.....................................................................done.
+
+Computing local clustering............................................................done.
+
+Ordering vertices.....................................................................done.
+
+Properties of the graph
+    Nb vertices:                    97
+    Nb edges:                       1934
+    Average degree:                 39.8763
+    Minimum degree:                 4
+    Maximum degree:                 96
+    Nb of degree class:             53
+    Average clustering:             0.7740
+
+Inferring parameters...
+           beta      avg. clustering 
+         2.4528 
+    WARNING: maximum number of iterations reached before convergence. This limit can be
+             adjusted by setting the parameters KAPPA_MAX_NB_ITER_CONV to desired value.
+                              0.7445 
+         3.6792 
+    WARNING: maximum number of iterations reached before convergence. This limit can be
+             adjusted by setting the parameters KAPPA_MAX_NB_ITER_CONV to desired value.
+                              0.7616 
+         5.5188 
+    WARNING: maximum number of iterations reached before convergence. This limit can be
+             adjusted by setting the parameters KAPPA_MAX_NB_ITER_CONV to desired value.
+                              0.7723 
+                       ...............................................................done.
+
+Inferred ensemble (random positions)
+    Average degree:                 39.8616
+    Minimum degree:                 4
+    Maximum degree:                 96
+    Average clustering:             0.7723
+    Parameters
+      - beta:                       5.5188
+      - mu:                         0.0119
+      - radius_S1 (R):              15.4380
+
+Finding initial positions/ordering...
+    Building the weights matrix... Matrix built.
+
+    Computing eigenvectors using Spectra parameter ncv = 7... Convergence reached.
+
+    Sum of the angular positions (before adjustment): 15.9412
+                                     .................................................done.
+
+Refining the positions...
+    ...of vertices    [1,4]......done in 0.0256 seconds (4/4 changed position)
+    ...of vertices    [5,8]......done in 0.0097 seconds (4/4 changed position)
+    ...of vertices   [9,12]......done in 0.0101 seconds (4/4 changed position)
+    ...of vertices  [13,16]......done in 0.0101 seconds (4/4 changed position)
+    ...of vertices  [17,20]......done in 0.0102 seconds (4/4 changed position)
+    ...of vertices  [21,24]......done in 0.0103 seconds (4/4 changed position)
+    ...of vertices  [25,28]......done in 0.0093 seconds (4/4 changed position)
+    ...of vertices  [29,32]......done in 0.0086 seconds (4/4 changed position)
+    ...of vertices  [33,36]......done in 0.0090 seconds (4/4 changed position)
+    ...of vertices  [37,40]......done in 0.0092 seconds (4/4 changed position)
+    ...of vertices  [41,44]......done in 0.0087 seconds (4/4 changed position)
+    ...of vertices  [45,48]......done in 0.0088 seconds (3/4 changed position)
+    ...of vertices  [49,52]......done in 0.0085 seconds (4/4 changed position)
+    ...of vertices  [53,56]......done in 0.0082 seconds (3/4 changed position)
+    ...of vertices  [57,60]......done in 0.0083 seconds (4/4 changed position)
+    ...of vertices  [61,64]......done in 0.0079 seconds (3/4 changed position)
+    ...of vertices  [65,68]......done in 0.0080 seconds (4/4 changed position)
+    ...of vertices  [69,72]......done in 0.0077 seconds (4/4 changed position)
+    ...of vertices  [73,76]......done in 0.0075 seconds (4/4 changed position)
+    ...of vertices  [77,80]......done in 0.0074 seconds (4/4 changed position)
+    ...of vertices  [81,84]......done in 0.0076 seconds (4/4 changed position)
+    ...of vertices  [85,88]......done in 0.0075 seconds (4/4 changed position)
+    ...of vertices  [89,92]......done in 0.0074 seconds (4/4 changed position)
+    ...of vertices  [93,96]......done in 0.0072 seconds (4/4 changed position)
+    ...of vertices  [97,97]......done in 0.0017 seconds (1/1 changed position)
+                         .............................................................done.
+
+Updating values of kappa based on inferred positions...
+    Convergence reached after 66 iterations.
+                                                       ...............................done.
+
+    => Inferred coordinates saved to graphs/dmercator/filt2/20/nat_429624.inf_coord
+
+    => Inferred theta density saved to graphs/dmercator/filt2/20/nat_429624.inf_theta_density
+
+    => Inferred connection probability saved to graphs/dmercator/filt2/20/nat_429624.inf_pconn
+
+Characterizing the inferred ensemble...
+
+    A total of 1000 graphs will be generated (chosen in function of the total number
+    of vertices). To change this value, set the flag 'CUSTOM_CHARACTERIZATION_NB_GRAPHS'
+    to 'true' and set the variable 'CHARACTERIZATION_NB_GRAPHS' to the desired value.
+
+    Generating and analyzing graphs      [1,50]......done in 0.6553 seconds
+    Generating and analyzing graphs    [51,100]......done in 0.6186 seconds
+    Generating and analyzing graphs   [101,150]......done in 0.7127 seconds
+    Generating and analyzing graphs   [151,200]......done in 0.6169 seconds
+    Generating and analyzing graphs   [201,250]......done in 0.6070 seconds
+    Generating and analyzing graphs   [251,300]......done in 0.5648 seconds
+    Generating and analyzing graphs   [301,350]......done in 0.5750 seconds
+    Generating and analyzing graphs   [351,400]......done in 0.5635 seconds
+    Generating and analyzing graphs   [401,450]......done in 0.5585 seconds
+    Generating and analyzing graphs   [451,500]......done in 0.5760 seconds
+    Generating and analyzing graphs   [501,550]......done in 0.5597 seconds
+    Generating and analyzing graphs   [551,600]......done in 0.5602 seconds
+    Generating and analyzing graphs   [601,650]......done in 0.5610 seconds
+    Generating and analyzing graphs   [651,700]......done in 0.6192 seconds
+    Generating and analyzing graphs   [701,750]......done in 0.6734 seconds
+    Generating and analyzing graphs   [751,800]......done in 0.6401 seconds
+    Generating and analyzing graphs   [801,850]......done in 0.7526 seconds
+    Generating and analyzing graphs   [851,900]......done in 0.5902 seconds
+    Generating and analyzing graphs   [901,950]......done in 0.5924 seconds
+    Generating and analyzing graphs  [951,1000]......done in 0.5573 seconds
+                                       ...............................................done.
+
+    => Vertices properties of the inferred ensemble saved to graphs/dmercator/filt2/20/nat_429624.inf_vprop
+
+    => Inferred ensemble statistics by degree class saved to graphs/dmercator/filt2/20/nat_429624.inf_vstat
+
+Extracting the original graph statistics by degree class..............................done.
+
+    => Original graph statistics by degree class saved to graphs/dmercator/filt2/20/nat_429624.obs_vstat
+
+Computing two-sample Kolmogorov-Smirnov test......
+Test statistic: 0.0271, critical_value: 0.2324
+The null hypothesis is not rejected at level 0.0500
+Two data samples does come from the same distribution
+
+Internal parameters and options
+    ALREADY_INFERRED_PARAMETERS_FILENAME   
+    BETA_ABS_MAX                           25
+    BETA_ABS_MIN                           1.01
+    CHARACTERIZATION_MODE                  true
+    CHARACTERIZATION_NB_GRAPHS             1000
+    CLEAN_RAW_OUTPUT_MODE                  false
+    CUSTOM_BETA                            false
+    CUSTOM_CHARACTERIZATION_NB_GRAPHS      false
+    CUSTOM_INFERRED_COORDINATES            false
+    CUSTOM_OUTPUT_ROOTNAME_MODE            false
+    CUSTOM_SEED                            false
+    EDGELIST_FILENAME:                     graphs/dmercator/filt2/20/nat_429624.edge
+    EXP_CLUST_NB_INTEGRATION_MC_STEPS      600
+    EXP_DIST_NB_INTEGRATION_STEPS          1000
+    KAPPA_MAX_NB_ITER_CONV                 500
+    KAPPA_POST_INFERENCE_MODE              true
+    MAXIMIZATION_MODE                      true
+    MIN_NB_ANGLES_TO_TRY                   100
+    NUMERICAL_CONVERGENCE_THRESHOLD_1      0.01
+    NUMERICAL_CONVERGENCE_THRESHOLD_2      5e-05
+    NUMERICAL_CONVERGENCE_THRESHOLD_3      0.5
+    NUMERICAL_ZERO                         1e-10
+    QUIET_MODE                             false
+    REFINE_MODE                            false
+    ROOTNAME_OUTPUT:                       graphs/dmercator/filt2/20/nat_429624
+    SEED                                   1722458094
+    VALIDATION_MODE                        true
+    VERBOSE_MODE                           false
+    VERSION                                0.9
+
+Ended on: 2024/07/31 20:35 UTC
+Elapsed CPU time (embedding):               14.3676 seconds
+    initialization:                          0.0145 seconds
+    parameters inference:                   13.9941 seconds
+    initial positions:                       0.1257 seconds
+    refining positions:                      0.2260 seconds
+    adjusting kappas:                        0.0074 seconds
+Elapsed CPU time (validation):              12.1602 seconds
+    validating embedding:                    0.0026 seconds
+    characterizing ensemble:                12.1576 seconds
+===========================================================================================

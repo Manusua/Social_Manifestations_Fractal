@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2024-07-31">
+    <creator>NetworkX 3.3</creator>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <nodes>
+      <node id="2235" label="2235" />
+      <node id="5830" label="5830" />
+      <node id="10909" label="10909" />
+      <node id="10391" label="10391" />
+      <node id="10923" label="10923" />
+      <node id="11289" label="11289" />
+      <node id="18343" label="18343" />
+      <node id="19267" label="19267" />
+      <node id="18775" label="18775" />
+      <node id="4985" label="4985" />
+      <node id="5274" label="5274" />
+      <node id="5933" label="5933" />
+      <node id="6255" label="6255" />
+      <node id="10950" label="10950" />
+      <node id="10958" label="10958" />
+      <node id="11589" label="11589" />
+      <node id="12789" label="12789" />
+      <node id="13251" label="13251" />
+      <node id="15162" label="15162" />
+      <node id="15185" label="15185" />
+      <node id="15385" label="15385" />
+      <node id="16415" label="16415" />
+      <node id="6398" label="6398" />
+      <node id="18465" label="18465" />
+      <node id="12705" label="12705" />
+      <node id="2346" label="2346" />
+      <node id="10908" label="10908" />
+      <node id="2203" label="2203" />
+      <node id="1549" label="1549" />
+      <node id="16689" label="16689" />
+      <node id="2494" label="2494" />
+      <node id="10838" label="10838" />
+      <node id="8100" label="8100" />
+      <node id="8101" label="8101" />
+      <node id="15407" label="15407" />
+      <node id="4077" label="4077" />
+      <node id="13945" label="13945" />
+      <node id="10915" label="10915" />
+      <node id="10928" label="10928" />
+      <node id="11781" label="11781" />
+      <node id="14641" label="14641" />
+      <node id="2883" label="2883" />
+      <node id="9730" label="9730" />
+      <node id="13982" label="13982" />
+      <node id="11087" label="11087" />
+      <node id="2734" label="2734" />
+      <node id="14449" label="14449" />
+    </nodes>
+    <edges />
+  </graph>
+</gexf>

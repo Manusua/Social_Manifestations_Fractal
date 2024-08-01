@@ -146,6 +146,7 @@ def plot_scatter(array_points, name_x, name_y, name_plot, path, scale_log=True, 
         plt.legend()
         path = path[:-4] + " - K_T_" + str(arr_kt_plot) + ".png"
     plt.savefig(path)
+    print(path)
     plt.set_cmap(plt.get_cmap('viridis'))
 
     plt.show()
@@ -192,9 +193,8 @@ def plot_degree_probability_distribution(arr_norm_degrees, name_graph, plots_fol
     arr_deg_prob = []
     for points in arr_norm_degrees:
         degrees, counts = np.unique(points, return_counts=True)
-        #probs = counts / len(points)
-        #arr_deg_prob.append((degrees, probs))
-        arr_deg_prob.append((degrees, counts))
+        probs = counts / len(points)
+        arr_deg_prob.append((degrees, probs))
 
     plot_scatter(arr_deg_prob, name_x=name_x, name_y=name_y, name_plot=name_plot, path=plots_folder + str(name_graph) + "_pdf.png", scale_log=scale_log, arr_kt_plot=arr_kt_plot, pl=pl)
     return arr_deg_prob

@@ -33,10 +33,11 @@ def calc_fig2a_avg_clust_coef_by_normalized_internal_degree(G, clust):
     #average_internal_degree = np.mean(np.array(list(dict_hid_var_aux.keys())))
     #average_internal_degree = np.mean(arr_int_deg)
 
-    average_degree = calc_avg_degree(G)
+    #average_degree = calc_avg_degree(G)
     # Ordenamos el diccionario en función de la clave (internal degree) de menor a mayor
     # sorted(dict) devuleve las keys ordenadas
-    dict_hid_var_aux_2 = {k/average_degree: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
+    dict_hid_var_aux_2 = {k: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
+    #dict_hid_var_aux_2 = {k/average_degree: dict_hid_var_aux[k] for k in sorted(dict_hid_var_aux)}
 
     # Creamos un diccionario con internal degrees como clave y la media de coeficiente de clusterización
     # de los nodos que tienen dicho internal degree como valor
@@ -81,7 +82,7 @@ def convert_keys_to_float(d, recursive=True, tipo="float"):
 #   - arr_norm_int_deg_fig2a: array con diccionarios con internal degrees como clave y la media de coeficiente de clusterización
 #       de los nodos que tienen dicho internal degree como valor. Cada índice se corresponde con el treshold empleado
 #       para generar el subgrafo
-def calc_clust(G, MAX_UMBRAL, measures_name, clust_flag=True, deg=True, bipartite=False):
+def calc_clust(G, MAX_UMBRAL, measures_name, deg=True, bipartite=False):
     
     dict_tres_avg_clust_fig2e = {}
     dict_norm_int_deg_fig2a = {}
@@ -103,7 +104,7 @@ def calc_clust(G, MAX_UMBRAL, measures_name, clust_flag=True, deg=True, bipartit
             dict_tres_avg_clust_fig2e = {}
 
     for treshold in tqdm(range(MAX_UMBRAL)):
-        treshold = float(treshold) #+ 990 para probar que pasa en users con k_t muy alta
+        treshold = float(treshold) #para probar que pasa en users con k_t muy alta
         flag_2a = treshold in dict_norm_int_deg_fig2a.keys()
         flag_2e = treshold in dict_tres_avg_clust_fig2e.keys()
         # Si ambas son true podemos saltar el paso
@@ -121,13 +122,13 @@ def calc_clust(G, MAX_UMBRAL, measures_name, clust_flag=True, deg=True, bipartit
                 return dict_tres_avg_clust_fig2e, dict_norm_int_deg_fig2a
             #TODO para ejecutar sobre gráfica cugraph https://github.com/rapidsai/cugraph/tree/branch-24.06/python/nx-cugraph
             # diccionario[nodo] = coeficiente de clusterización del nodo https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.clustering.html#networkx.algorithms.cluster.clustering
-            if clust_flag and not flag_2e:
-                if bipartite:
-                    clust = nx.algorithms.bipartite.clustering(F)
-                else:
-                    clust  = nx.clustering(F)
-                avg_clust = np.mean(np.array(list(clust.values())))
-                dict_tres_avg_clust_fig2e[treshold] = avg_clust
+            if bipartite:
+                clust = nx.algorithms.bipartite.clustering(F)
+            else:
+                clust  = nx.clustering(F)
+            avg_clust = np.mean(np.array(list(clust.values())))
+            dict_tres_avg_clust_fig2e[treshold] = avg_clust
+
             if deg and not flag_2a:
                 dict_norm_int_deg_fig2a[treshold] = calc_fig2a_avg_clust_coef_by_normalized_internal_degree(F, clust)
         with open(measures_name + '_2a.json', "w") as f:

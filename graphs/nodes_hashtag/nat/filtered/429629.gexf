@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2024-07-31">
+    <creator>NetworkX 3.3</creator>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <nodes>
+      <node id="11906" label="11906" />
+      <node id="14000" label="14000" />
+      <node id="14652" label="14652" />
+      <node id="9940" label="9940" />
+      <node id="14641" label="14641" />
+      <node id="647" label="647" />
+      <node id="8145" label="8145" />
+      <node id="11549" label="11549" />
+      <node id="17738" label="17738" />
+      <node id="18697" label="18697" />
+      <node id="2017" label="2017" />
+      <node id="10076" label="10076" />
+      <node id="11706" label="11706" />
+      <node id="11781" label="11781" />
+      <node id="4812" label="4812" />
+      <node id="14486" label="14486" />
+      <node id="2827" label="2827" />
+      <node id="3283" label="3283" />
+      <node id="4729" label="4729" />
+      <node id="2500" label="2500" />
+      <node id="6454" label="6454" />
+      <node id="17796" label="17796" />
+      <node id="209" label="209" />
+      <node id="471" label="471" />
+      <node id="1192" label="1192" />
+      <node id="1615" label="1615" />
+      <node id="3600" label="3600" />
+      <node id="3994" label="3994" />
+      <node id="5595" label="5595" />
+      <node id="7080" label="7080" />
+      <node id="7126" label="7126" />
+      <node id="7604" label="7604" />
+      <node id="9774" label="9774" />
+      <node id="15571" label="15571" />
+      <node id="16128" label="16128" />
+      <node id="16138" label="16138" />
+      <node id="17300" label="17300" />
+      <node id="17321" label="17321" />
+      <node id="17326" label="17326" />
+      <node id="19223" label="19223" />
+      <node id="20858" label="20858" />
+      <node id="20992" label="20992" />
+      <node id="1335" label="1335" />
+      <node id="12027" label="12027" />
+      <node id="12258" label="12258" />
+      <node id="2030" label="2030" />
+      <node id="2503" label="2503" />
+      <node id="9941" label="9941" />
+      <node id="11479" label="11479" />
+      <node id="14037" label="14037" />
+      <node id="3899" label="3899" />
+      <node id="10030" label="10030" />
+      <node id="7528" label="7528" />
+      <node id="10115" label="10115" />
+      <node id="2894" label="2894" />
+      <node id="460" label="460" />
+      <node id="5983" label="5983" />
+      <node id="8555" label="8555" />
+      <node id="13252" label="13252" />
+      <node id="10318" label="10318" />
+      <node id="16950" label="16950" />
+      <node id="14608" label="14608" />
+      <node id="21704" label="21704" />
+      <node id="22197" label="22197" />
+      <node id="12049" label="12049" />
+      <node id="10662" label="10662" />
+      <node id="21997" label="21997" />
+      <node id="2596" label="2596" />
+      <node id="4218" label="4218" />
+      <node id="16900" label="16900" />
+      <node id="17613" label="17613" />
+      <node id="2343" label="2343" />
+      <node id="7093" label="7093" />
+      <node id="11818" label="11818" />
+      <node id="14299" label="14299" />
+      <node id="10652" label="10652" />
+      <node id="5455" label="5455" />
+      <node id="708" label="708" />
+      <node id="889" label="889" />
+      <node id="6980" label="6980" />
+      <node id="4598" label="4598" />
+      <node id="2588" label="2588" />
+      <node id="5605" label="5605" />
+      <node id="7968" label="7968" />
+      <node id="98" label="98" />
+      <node id="10576" label="10576" />
+      <node id="16528" label="16528" />
+      <node id="7515" label="7515" />
+      <node id="13674" label="13674" />
+      <node id="3284" label="3284" />
+      <node id="7019" label="7019" />
+      <node id="4589" label="4589" />
+      <node id="10242" label="10242" />
+      <node id="386" label="386" />
+      <node id="17768" label="17768" />
+      <node id="10658" label="10658" />
+      <node id="3347" label="3347" />
+      <node id="11899" label="11899" />
+      <node id="2833" label="2833" />
+      <node id="14660" label="14660" />
+      <node id="15436" label="15436" />
+      <node id="1938" label="1938" />
+      <node id="2497" label="2497" />
+      <node id="6305" label="6305" />
+      <node id="8181" label="8181" />
+      <node id="8923" label="8923" />
+      <node id="9416" label="9416" />
+      <node id="11399" label="11399" />
+      <node id="14086" label="14086" />
+      <node id="17617" label="17617" />
+      <node id="22410" label="22410" />
+      <node id="6679" label="6679" />
+      <node id="12863" label="12863" />
+      <node id="16237" label="16237" />
+      <node id="17477" label="17477" />
+      <node id="17483" label="17483" />
+      <node id="17487" label="17487" />
+      <node id="12024" label="12024" />
+      <node id="4512" label="4512" />
+      <node id="2659" label="2659" />
+      <node id="17526" label="17526" />
+      <node id="17905" label="17905" />
+      <node id="23068" label="23068" />
+      <node id="6027" label="6027" />
+      <node id="6028" label="6028" />
+      <node id="20355" label="20355" />
+      <node id="2013" label="2013" />
+      <node id="44" label="44" />
+      <node id="5184" label="5184" />
+      <node id="7414" label="7414" />
+      <node id="3645" label="3645" />
+      <node id="11951" label="11951" />
+      <node id="1591" label="1591" />
+      <node id="1633" label="1633" />
+      <node id="8992" label="8992" />
+      <node id="10675" label="10675" />
+      <node id="13923" label="13923" />
+      <node id="16699" label="16699" />
+      <node id="21403" label="21403" />
+      <node id="22619" label="22619" />
+      <node id="22622" label="22622" />
+      <node id="17542" label="17542" />
+      <node id="14517" label="14517" />
+      <node id="1279" label="1279" />
+      <node id="6257" label="6257" />
+      <node id="10479" label="10479" />
+      <node id="6706" label="6706" />
+      <node id="289" label="289" />
+      <node id="2912" label="2912" />
+      <node id="21178" label="21178" />
+      <node id="12225" label="12225" />
+      <node id="3368" label="3368" />
+      <node id="22249" label="22249" />
+      <node id="13428" label="13428" />
+      <node id="10639" label="10639" />
+      <node id="2515" label="2515" />
+      <node id="6927" label="6927" />
+      <node id="7589" label="7589" />
+      <node id="628" label="628" />
+      <node id="14057" label="14057" />
+      <node id="10214" label="10214" />
+      <node id="10725" label="10725" />
+      <node id="927" label="927" />
+      <node id="13871" label="13871" />
+      <node id="14586" label="14586" />
+      <node id="21805" label="21805" />
+      <node id="1060" label="1060" />
+      <node id="11336" label="11336" />
+      <node id="10015" label="10015" />
+      <node id="728" label="728" />
+      <node id="9183" label="9183" />
+      <node id="11741" label="11741" />
+      <node id="4700" label="4700" />
+      <node id="5659" label="5659" />
+      <node id="21916" label="21916" />
+      <node id="1201" label="1201" />
+      <node id="2725" label="2725" />
+      <node id="6973" label="6973" />
+      <node id="462" label="462" />
+      <node id="3546" label="3546" />
+      <node id="6495" label="6495" />
+      <node id="11108" label="11108" />
+      <node id="4707" label="4707" />
+      <node id="13406" label="13406" />
+      <node id="18700" label="18700" />
+      <node id="4023" label="4023" />
+      <node id="12761" label="12761" />
+      <node id="9148" label="9148" />
+      <node id="4527" label="4527" />
+      <node id="5918" label="5918" />
+      <node id="6399" label="6399" />
+      <node id="9379" label="9379" />
+      <node id="11827" label="11827" />
+      <node id="13615" label="13615" />
+      <node id="8856" label="8856" />
+      <node id="11272" label="11272" />
+      <node id="18097" label="18097" />
+      <node id="4727" label="4727" />
+      <node id="21683" label="21683" />
+      <node id="5330" label="5330" />
+      <node id="7555" label="7555" />
+      <node id="11877" label="11877" />
+      <node id="22199" label="22199" />
+      <node id="1614" label="1614" />
+      <node id="2893" label="2893" />
+      <node id="6329" label="6329" />
+      <node id="8116" label="8116" />
+      <node id="8531" label="8531" />
+      <node id="10690" label="10690" />
+      <node id="10908" label="10908" />
+      <node id="10909" label="10909" />
+      <node id="10934" label="10934" />
+      <node id="11836" label="11836" />
+      <node id="14598" label="14598" />
+      <node id="16476" label="16476" />
+      <node id="21146" label="21146" />
+      <node id="22119" label="22119" />
+      <node id="14570" label="14570" />
+      <node id="2479" label="2479" />
+      <node id="14054" label="14054" />
+      <node id="6287" label="6287" />
+    </nodes>
+    <edges>
+      <edge source="14652" target="9940" id="0" weight="12" />
+      <edge source="14652" target="14641" id="1" weight="40" />
+      <edge source="14652" target="2017" id="2" weight="18" />
+      <edge source="14652" target="11781" id="3" weight="20" />
+      <edge source="14652" target="2827" id="4" weight="38" />
+      <edge source="14652" target="1615" id="5" weight="8" />
+      <edge source="14652" target="16128" id="6" weight="8" />
+      <edge source="14652" target="16138" id="7" weight="18" />
+      <edge source="14652" target="1335" id="8" weight="8" />
+      <edge source="14652" target="2030" id="9" weight="10" />
+      <edge source="14652" target="14037" id="10" weight="8" />
+      <edge source="14652" target="460" id="11" weight="22" />
+      <edge source="14652" target="2833" id="12" weight="8" />
+      <edge source="9940" target="14641" id="13" weight="12" />
+      <edge source="14641" target="16138" id="14" weight="8" />
+      <edge source="14641" target="2017" id="15" weight="8" />
+      <edge source="14641" target="2827" id="16" weight="12" />
+      <edge source="14641" target="460" id="17" weight="10" />
+      <edge source="14641" target="11781" id="18" weight="14" />
+      <edge source="2017" target="11781" id="19" weight="12" />
+      <edge source="2017" target="2827" id="20" weight="12" />
+      <edge source="11781" target="2827" id="21" weight="10" />
+      <edge source="11781" target="460" id="22" weight="8" />
+      <edge source="2827" target="460" id="23" weight="12" />
+      <edge source="2827" target="1335" id="24" weight="8" />
+      <edge source="2827" target="16138" id="25" weight="8" />
+    </edges>
+  </graph>
+</gexf>
